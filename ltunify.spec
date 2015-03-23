@@ -12,6 +12,10 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 Pair, unpair or list information about wireless devices like keyboards
+and mice that use the Logitech(r) Unifying receiver.
+
+%description -l en_US.utf8
+Pair, unpair or list information about wireless devices like keyboards
 and mice that use the Logitech® Unifying receiver.
 
 %prep
@@ -20,15 +24,14 @@ and mice that use the Logitech® Unifying receiver.
 %build
 %{__make} \
 	PACKAGE_VERSION=%{version} \
-	CC=%{__cc} \
+	CC="%{__cc}" \
 	CFLAGS="%{rpmcflags}" \
 	LDFLAGS="%{rpmldflags}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{/etc/udev/rules.d,%{_bindir}}
-
 %{__make} install \
+	udevrulesdir=/lib/udev/rules.d \
 	bindir=%{_bindir} \
 	DESTDIR=$RPM_BUILD_ROOT
 
@@ -39,4 +42,4 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc NEWS README.txt keyboard.txt notes.txt registers.txt
 %attr(755,root,root) %{_bindir}/%{name}
-/etc/udev/rules.d/42-logitech-unify-permissions.rules
+/lib/udev/rules.d/42-logitech-unify-permissions.rules
